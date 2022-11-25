@@ -1,8 +1,11 @@
 import * as express from "express";
-import {pingController} from "./controllers/ping";
+import { eventController } from "./controllers/eventController";
+import * as cors from "cors";
 
 const app = express();
 
-app.use(pingController);
+app.use(cors());
+
+app.use(eventController);
 
 export default app;

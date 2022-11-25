@@ -1,6 +1,8 @@
-import app from './application';
+import app from "./application";
+import { DatabaseConnectionManager } from "./db/databaseConnectionManager";
 
 const port = process.env.PORT || 8000;
+DatabaseConnectionManager.init();
 
 app.listen(port, () => {
   // tslint:disable-next-line:no-console
