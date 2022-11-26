@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React from "react";
+import styled from "styled-components";
 import { Box, Button, Form, FormField, TextInput, Select } from "grommet";
 import { getEvents } from "../ApiService";
 import { getKeyByValue } from "../helper";
@@ -7,18 +8,24 @@ import { eventTypeOptions } from "../helper";
 export const MainForm = ({
   setData,
   setTableHeader,
-  currentPage,
   information,
   setInformation,
+  currentPage,
+  setCurrentPage,
 }) => {
-  function handleChange(evt) {
+  const handleChange = (evt) => {
+    setData("");
+    setInformation("");
+    setTableHeader("");
+    setCurrentPage(1);
     const value = evt.target.value;
-    setTableHeader(value);
     setInformation({
       ...information,
       [evt.target.name]: value,
     });
-  }
+  };
+
+  const careRecipientIdValidation = /[a-zA-Z0-9]{8}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{12}/g;
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -33,39 +40,63 @@ export const MainForm = ({
   };
 
   return (
-    <>
-      <Box align="center" pad="large" direction="row" justify="between">
-        <Form
-          onSubmit={(e) => {
-            handleSubmit(e);
-          }}
-        >
-          <Box>
-            <FormField label="Care Recipient Id" htmlFor="text-input">
-              <TextInput
-                id="text-input"
-                name="careRecipientId"
-                placeholder="e.g df50cac5-293c-490d-a06c-ee26796f850d"
-                value={information.careRecipientId}
-                onChange={handleChange}
-              />
-            </FormField>
-          </Box>
-          <Box>
-            <FormField label="Event">
-              <Select
-                id="select"
-                name="eventType"
-                placeholder="Select"
-                value={information.eventType}
-                options={Object.values(eventTypeOptions)}
-                onChange={handleChange}
-              />
-            </FormField>
-          </Box>
-          <Button type="submit" label="submit" />
-        </Form>
-      </Box>
-    </>
+    <Box display="flex">
+      <CustomForm
+        onSubmit={(e) => {
+          handleSubmit(e);
+        }}
+      >
+        <FormFieldContainer validate="change">
+          <FormField
+            label="Care Recipient Id"
+            htmlFor="text-input"
+            name="careRecipientId"
+            required
+            validate={{
+              regexp: careRecipientIdValidation,
+              message: "Must enter a valid Id",
+              status: "error",
+            }}
+          >
+            <TextInput
+              id="text-input"
+              name="careRecipientId"
+              placeholder="e.g df50cac5-293c-490d-a06c-ee26796f850d"
+              value={information.careRecipientId}
+              onChange={handleChange}
+            />
+          </FormField>
+        </FormFieldContainer>
+        <FormFieldContainer>
+          <FormField label="Event" name="eventType" required>
+            <Select
+              id="select"
+              name="eventType"
+              placeholder="Select"
+              value={information.eventType}
+              options={Object.values(eventTypeOptions)}
+              onChange={handleChange}
+            />
+          </FormField>
+        </FormFieldContainer>
+        <SubmitButton type="submit" label="submit" />
+      </CustomForm>
+    </Box>
   );
 };
+
+const CustomForm = styled(Form)`
+  display: flex;
+  justify-content: flex-start;
+  margin: 2rem;
+`;
+
+const SubmitButton = styled(Button)`
+  display: block;
+  height: 2.3rem;
+  margin: 2rem;
+`;
+
+const FormFieldContainer = styled.div`
+  margin-right: 1.5rem;
+`;

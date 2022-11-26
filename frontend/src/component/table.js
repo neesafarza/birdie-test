@@ -1,9 +1,29 @@
-import react, { useState } from "react";
+import react, { useState, useEffect } from "react";
 import { Box, DataTable, Pagination } from "grommet";
+import { getEvents } from "../ApiService";
 
-export const Table = ({ data, currentPage, setCurrentPage, eventTypeEnum }) => {
+export const Table = ({
+  data,
+  eventTypeEnum,
+  information,
+  setData,
+  currentPage,
+  setCurrentPage,
+}) => {
   const numberItems = data.count;
   const limit = 10;
+
+  useEffect(() => {
+    getEvents(information.careRecipientId, eventTypeEnum, currentPage)
+      .then((res) => {
+        setData(res);
+      })
+      .catch((error) => console.error("Unable to get data:", error));
+  }, [currentPage]);
+
+  const handleChange = (opts) => {
+    setCurrentPage(opts.page);
+  };
 
   const columns = [
     {
@@ -101,7 +121,7 @@ export const Table = ({ data, currentPage, setCurrentPage, eventTypeEnum }) => {
           page={currentPage}
           step={limit}
           value={currentPage}
-          onChange={(opts) => setCurrentPage(opts.page)}
+          onChange={handleChange}
         />
       </Box>
     </Box>

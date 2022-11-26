@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { MainForm } from "./mainForm";
 import { Table } from "./table";
-import { getEvents } from "../ApiService";
 import { getKeyByValue } from "../helper";
 import { eventTypeOptions } from "../helper";
 
@@ -13,25 +12,17 @@ export const MainApp = () => {
   });
   const [tableHeader, setTableHeader] = useState();
   const [currentPage, setCurrentPage] = useState(1);
-
   const eventTypeEnum = getKeyByValue(eventTypeOptions, information.eventType);
-
-  useEffect(() => {
-    getEvents(information.careRecipientId, eventTypeEnum, currentPage)
-      .then((res) => {
-        setData(res);
-      })
-      .catch((error) => console.error("Unable to get data:", error));
-  }, [currentPage, information]);
 
   return (
     <div>
       <MainForm
         setData={setData}
         setTableHeader={setTableHeader}
-        currentPage={currentPage}
         information={information}
         setInformation={setInformation}
+        currentPage={currentPage}
+        setCurrentPage={setCurrentPage}
       />
       {tableHeader && (
         <>
@@ -40,9 +31,9 @@ export const MainApp = () => {
             information={information}
             data={data}
             setData={setData}
+            eventTypeEnum={eventTypeEnum}
             currentPage={currentPage}
             setCurrentPage={setCurrentPage}
-            eventTypeEnum={eventTypeEnum}
           />
         </>
       )}
