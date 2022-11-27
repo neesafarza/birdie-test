@@ -63,7 +63,7 @@ npm test
 
 ### What I'm pleased with
 
-- I am pleased with the backend where pagination is used therefore the API wont sent too "heavy" data to the frontend. I also like the use of sequelize because it makes managing databases more secure.
+- I am pleased with the backend where pagination is used therefore the API wont sent too "heavy" data to the frontend. I also like the use of sequelize because it makes managing databases easier and more secure.
 - In front-end, I like how the table can rendered a different column according to eventTypes. It also have validation for the careRecipientId to ensure users type in the correct format of care recipient Id.
 
 ### Room for improvement
