@@ -1,6 +1,7 @@
-import react, { useState, useEffect } from "react";
+import react, { useEffect } from "react";
 import { Box, DataTable, Pagination } from "grommet";
 import { getEvents } from "../ApiService";
+import { useIsMount } from "../useIsMount";
 
 export const Table = ({
   data,
@@ -10,16 +11,21 @@ export const Table = ({
   currentPage,
   setCurrentPage,
 }) => {
+  const isMount = useIsMount();
   const numberItems = data.count;
   const limit = 10;
 
   useEffect(() => {
-    getEvents(information.careRecipientId, eventTypeEnum, currentPage)
-      .then((res) => {
-        setData(res);
-      })
-      .catch((error) => console.error("Unable to get data:", error));
-  }, [currentPage]);
+    if (isMount) {
+      return;
+    } else {
+      getEvents(information.careRecipientId, eventTypeEnum, currentPage)
+        .then((res) => {
+          setData(res);
+        })
+        .catch((error) => console.error("Unable to get data:", error));
+    }
+  });
 
   const handleChange = (opts) => {
     setCurrentPage(opts.page);
@@ -113,7 +119,7 @@ export const Table = ({
   }
 
   return (
-    <Box align="center" pad="large" overflow="auto">
+    <Box align="center" pad="large" overflow="auto" data-testid="main-table">
       <DataTable columns={columns} data={data.rows} resizeable />
       <Box>
         <Pagination

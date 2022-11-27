@@ -32,7 +32,7 @@ export const MainForm = ({
     setTableHeader(e.value.eventType);
     getEvents(
       e.value.careRecipientId,
-      getKeyByValue(eventTypeOptions, e.value.eventType),
+      getKeyByValue(e.value.eventType),
       currentPage
     ).then((res) => {
       setData(res);
@@ -42,6 +42,7 @@ export const MainForm = ({
   return (
     <Box display="flex">
       <CustomForm
+        data-testid="main-form"
         onSubmit={(e) => {
           handleSubmit(e);
         }}
@@ -68,8 +69,14 @@ export const MainForm = ({
           </FormField>
         </FormFieldContainer>
         <FormFieldContainer>
-          <FormField label="Event" name="eventType" required>
+          <FormField
+            label="Event"
+            name="eventType"
+            data-testid="event-type"
+            required
+          >
             <Select
+              data-testid="event-select"
               id="select"
               name="eventType"
               placeholder="Select"
@@ -79,7 +86,7 @@ export const MainForm = ({
             />
           </FormField>
         </FormFieldContainer>
-        <SubmitButton type="submit" label="submit" />
+        <SubmitButton type="submit" label="Submit" />
       </CustomForm>
     </Box>
   );

@@ -1,5 +1,7 @@
-export function getKeyByValue(object, value) {
-  return Object.keys(object).find((key) => object[key] === value);
+export function getKeyByValue(value) {
+  return Object.keys(eventTypeOptions).find(
+    (key) => eventTypeOptions[key] === value
+  );
 }
 
 export const eventTypeOptions = {

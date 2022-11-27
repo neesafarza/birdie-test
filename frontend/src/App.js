@@ -6,7 +6,7 @@ function App() {
   return (
     <>
       <AppBar />
-      <div className="App">
+      <div className="App" data-testid="app">
         <MainApp />
       </div>
     </>
